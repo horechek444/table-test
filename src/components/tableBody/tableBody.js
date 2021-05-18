@@ -1,5 +1,5 @@
 import React from "react";
-import tableHeadNames from "../../data";
+import tableHeadNames from "../../utils/data";
 
 const TableBody = () => {
   return (

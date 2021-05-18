@@ -1,5 +1,22 @@
-.table__head {
+.head {
   background-color: aliceblue;
   font-weight: bold;
   min-width: 145px;
+  cursor: pointer;
+}
+
+.head__cover {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.head__arrow {
+  width: 12px;
+  height: auto;
+  transform: rotate(180deg);
+}
+
+.head__arrow_open {
+  transform: rotate(0deg);
 }
