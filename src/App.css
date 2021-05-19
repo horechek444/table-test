@@ -44,3 +44,9 @@
 .table__cell {
   border: 1px solid black;
 }
+
+.table__selected-row {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
