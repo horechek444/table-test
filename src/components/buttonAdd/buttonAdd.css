@@ -1,5 +1,4 @@
 .button__add {
-  padding: 8px;
   background-color: rgba(250, 235, 215, 1);
   align-self: flex-end;
 }
@@ -10,6 +9,10 @@
 
 .button__add:disabled {
   cursor: unset;
+  background-color: gainsboro;
+}
+
+.button__add:disabled:hover {
   background-color: gainsboro;
 }
 

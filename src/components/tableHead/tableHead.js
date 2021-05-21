@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import tableHeadNames from "../../utils/data";
+import React from "react";
+import {tableHeadNames} from "../../utils/data";
 import "./tableHead.css";
 import arrow from "../../images/arrow.svg";
 

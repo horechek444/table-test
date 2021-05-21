@@ -1,12 +1,12 @@
 import React from "react";
-import tableHeadNames from "../../utils/data";
+import {tableHeadNames} from "../../utils/data";
 
 const TableBody = () => {
   return (
     <tr className="table__row">
       {tableHeadNames.map((item) =>
         (<td key={item} className="table__cell">
-          <input className={`input input__${item}`}/>
+          <input className={`input input__${item}`} name={item} required />
         </td>)
       )}
     </tr>

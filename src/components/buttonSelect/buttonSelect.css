@@ -1,0 +1,7 @@
+.button__select {
+  background-color: rgba(173, 216, 230, 1);
+}
+
+.button__select:hover {
+  background-color: rgba(173, 216, 230, 0.7);
+}

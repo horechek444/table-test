@@ -1,0 +1,12 @@
+.data-selection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.data-selection__cover {
+  display: flex;
+  width: 255px;
+  justify-content: space-between;
+}
