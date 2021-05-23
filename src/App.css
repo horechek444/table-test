@@ -34,20 +34,20 @@
   cursor: pointer;
 }
 
+button:disabled {
+  cursor: unset;
+  background-color: gainsboro;
+}
+
+.button:disabled:hover {
+  background-color: gainsboro;
+}
+
 .table {
   border-collapse: collapse;
 }
 
-.table__row {
-  border: 1px solid black;
-}
-
+.table__row,
 .table__cell {
   border: 1px solid black;
-}
-
-.table__selected-row {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
 }

@@ -1,0 +1,17 @@
+.table__selected-row {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.table__selected_margin {
+  margin-top: 20px;
+}
+
+.table__selected-user {
+  font-weight: bold;
+}
+
+.table__selected-paragraph {
+
+}

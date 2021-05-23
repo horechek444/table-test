@@ -7,15 +7,6 @@
   background-color: rgba(250, 235, 215, 0.7);
 }
 
-.button__add:disabled {
-  cursor: unset;
-  background-color: gainsboro;
-}
-
-.button__add:disabled:hover {
-  background-color: gainsboro;
-}
-
 .button__margin {
   margin-bottom: 20px;
 }

@@ -4,7 +4,7 @@ import "./selectionBlock.css";
 const SelectionBlock = ({children}) => {
   return (
     <div className="data-selection">
-      <h2 className="data-selection__title">Выбрать размер набора данных:</h2>
+      <h2 className="data-selection__title">Выберите размер набора данных:</h2>
       <div className="data-selection__cover">
         {children}
       </div>

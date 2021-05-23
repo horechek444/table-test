@@ -1,0 +1,15 @@
+.search__input {
+  margin-right: 5px;
+}
+
+.search__button {
+  background-color: rgba(240, 132, 132, 1);
+}
+
+.search__button:hover {
+  background-color: rgba(240, 132, 132, 0.7);
+}
+
+.search__button:hover {
+  background-color: rgba(240, 132, 132, 0.7);
+}
