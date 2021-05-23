@@ -1,19 +1,24 @@
 import React, {useCallback, useEffect, useState} from "react";
 import "./App.css";
-import TableHead from "./components/tableHead/tableHead";
-import ButtonAdd from "./components/buttonAdd/buttonAdd";
-import TableInput from "./components/tableInput/tableInput";
-import {tableHeadNames} from "./utils/data";
-import ButtonSelect from "./components/buttonSelect/buttonSelect";
-import SelectionBlock from "./components/selectionBlock/selectionBlock";
-import SearchForm from "./components/searchForm/searchForm";
-import SelectedUser from "./components/selectedUser/selectedUser";
+import {NOTES_ON_PAGE, tableHeadNames, URL_BIG} from "./utils/data";
+import TableHead from "./components/tableHead/TableHead";
+import ButtonAdd from "./components/buttonAdd/ButtonAdd";
+import TableInput from "./components/tableInput/TableInput";
+import ButtonSelect from "./components/buttonSelect/ButtonSelect";
+import SelectionBlock from "./components/selectionBlock/SelectionBlock";
+import SearchForm from "./components/searchForm/SearchForm";
+import SelectedUser from "./components/selectedUser/SelectedUser";
+import Paginator from "./components/paginator/Paginator";
 
 const App = () => {
   const [data, setData] = useState([]);
   const [sortedField, setSortedField] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
   const [url, setUrl] = useState('0');
+  const [currentPage, setCurrentPage] = useState(1);
+
+  let firstLimit = (currentPage - 1) * NOTES_ON_PAGE;
+  let secondLimit = firstLimit + NOTES_ON_PAGE;
 
   const getData = useCallback(() => {
     let link = `http://www.filltext.com/?rows=${url}`;
@@ -55,6 +60,10 @@ const App = () => {
     })
   }
 
+  const handlePageChanged = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  }
+
   return (
     <div className="page">
       <div className="page__cover">
@@ -63,15 +72,16 @@ const App = () => {
           <ButtonSelect name={'Много'} setUrl={setUrl}/>
           <ButtonSelect name={'Мало'} setUrl={setUrl}/>
         </SelectionBlock>
-        <SearchForm handleFilter={handleFilter} data={data} />
+        <SearchForm handleFilter={handleFilter} data={data}/>
         <ButtonAdd/>
+        {data.length && url === URL_BIG ? <Paginator currentPage={currentPage} handlePageChanged={handlePageChanged} /> : null}
         <table className="table">
           <thead className="table__title">
-          <TableHead sortedField={sortedField} handleSort={handleSort}/>
+            <TableHead sortedField={sortedField} handleSort={handleSort}/>
           </thead>
           <tbody className="table__body">
           <TableInput/>
-          {data.length ? data.map((item) => (
+          {data.length ? data.slice(firstLimit, secondLimit).map((item) => (
             <tr key={item.email} className="table__row" onClick={() => setSelectedUser(item)}>
               {tableHeadNames.map((name) =>
                 (<td key={name} className="table__cell">
@@ -83,7 +93,7 @@ const App = () => {
           }
           </tbody>
         </table>
-        <SelectedUser selectedUser={selectedUser} />
+        <SelectedUser selectedUser={selectedUser}/>
       </div>
     </div>
   );

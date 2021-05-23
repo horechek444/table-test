@@ -1,5 +1,5 @@
 import React from "react";
-import "./buttonSelect.css";
+import "./ButtonSelect.css";
 import {URL_BIG, URL_SMALL} from "../../utils/data";
 
 const ButtonSelect = ({name, setUrl}) => {

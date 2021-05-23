@@ -1,0 +1,26 @@
+.paginator {
+  margin-bottom: 20px;
+}
+
+.paginator__page {
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.paginator__button {
+  background-color: rgba(173, 216, 230, 1);
+}
+
+.paginator__button:hover {
+  background-color: rgba(173, 216, 230, 0.7);
+}
+
+.paginator__page:not(:first-of-type),
+.paginator__page:not(:last-of-type) {
+  margin: 0 5px 0;
+}
+
+.paginator__page_current {
+  font-weight: bold;
+  cursor: unset;
+}

@@ -1,5 +1,5 @@
 import React from "react";
-import "./selectionBlock.css";
+import "./SelectionBlock.css";
 
 const SelectionBlock = ({children}) => {
   return (

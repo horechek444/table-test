@@ -1,5 +1,5 @@
 import React from "react";
-import "./selectedUser.css";
+import "./SelectedUser.css";
 
 const SelectedUser = ({selectedUser}) => {
   return (

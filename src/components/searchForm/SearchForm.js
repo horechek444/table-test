@@ -1,5 +1,5 @@
 import React from "react";
-import "./searchForm.css";
+import "./SearchForm.css";
 
 const SearchForm = ({handleFilter, data}) => {
   const [searchInputValue, setSearchInputValue] = React.useState("");

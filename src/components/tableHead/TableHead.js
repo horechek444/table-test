@@ -1,6 +1,6 @@
 import React from "react";
 import {tableHeadNames} from "../../utils/data";
-import "./tableHead.css";
+import "./TableHead.css";
 import arrow from "../../images/arrow.svg";
 
 const TableHead = ({sortedField, handleSort}) => {
