@@ -1,9 +1,9 @@
 import React from "react";
 import "./ButtonAdd.css";
 
-const ButtonAdd = () => {
+const ButtonAdd = ({type, name, onClick}) => {
   return (
-    <button className="button button__add button__margin" disabled>Добавить</button>
+    <button className="button button__add button__margin" type={type} onClick={onClick}>{name}</button>
   );
 };
 
