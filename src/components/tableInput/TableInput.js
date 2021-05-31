@@ -5,8 +5,10 @@ const TableInput = ({handleInputChange, inputValue, validationMessage, isValid})
   const handleType = (item) => {
     if (item === "id") {
       return "number";
-    } else if (item === "firstName" || item === "lastName" || item === "phone") {
+    } else if (item === "firstName" || item === "lastName") {
       return "text";
+    } else if (item === "phone") {
+      return "tel";
     } else {
       return "email";
     }
@@ -14,13 +16,13 @@ const TableInput = ({handleInputChange, inputValue, validationMessage, isValid})
 
   const handlePattern = (item) => {
     if (item === "id") {
-      return "^\d\d\d?$";
+      return "^[0-9]{2,3}$";
     } else if (item === "firstName" || item === "lastName") {
       return "^[A-Za-z]+$";
     } else if (item === "phone") {
-      return "^\(\d\d\d\)\d\d\d\-\d\d\d\d$";
+      return "^[(][0-9]{3}[)][0-9]{3}-[0-9]{4}$";
     } else {
-      return "^[^@]+@[^@.]+\.[^@]+$";
+      return "^[^@]+@[^@.]+[^@]+$";
     }
   }
 
@@ -31,7 +33,8 @@ const TableInput = ({handleInputChange, inputValue, validationMessage, isValid})
           <label>
             <input
               className={`input input__${item}`}
-              name={item} type={handleType(item)}
+              name={item}
+              type={handleType(item)}
               pattern={handlePattern(item)}
               onChange={handleInputChange}
               value={inputValue[item]}

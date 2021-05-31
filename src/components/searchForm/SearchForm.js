@@ -1,8 +1,8 @@
-import React from "react";
+import React, {useState} from "react";
 import "./SearchForm.css";
 
 const SearchForm = ({handleFilter, data}) => {
-  const [searchInputValue, setSearchInputValue] = React.useState("");
+  const [searchInputValue, setSearchInputValue] = useState("");
 
   const handleSearchInputChange = (e) => {
     setSearchInputValue(e.target.value);
@@ -10,11 +10,8 @@ const SearchForm = ({handleFilter, data}) => {
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    if (!searchInputValue) {
-    } else {
-      handleFilter(searchInputValue);
-      setSearchInputValue("");
-    }
+    handleFilter(searchInputValue);
+    setSearchInputValue("");
   }
 
   return (

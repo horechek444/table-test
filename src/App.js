@@ -20,6 +20,12 @@ const App = () => {
     )
   };
 
+  const [data, setData] = useState([]);
+  const [sortedField, setSortedField] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [url, setUrl] = useState('0');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [inputShow, setInputShow] = useState(false);
   const [isValid, setIsValid] = React.useState(fieldsEnumeration(false));
   const [inputValue, setInputValue] = React.useState(fieldsEnumeration(''));
   const [validationMessage, setValidationMessage] = React.useState(fieldsEnumeration(''));
@@ -41,17 +47,6 @@ const App = () => {
       [name]: event.target.validationMessage
     });
   };
-
-
-
-
-
-  const [data, setData] = useState([]);
-  const [sortedField, setSortedField] = useState(null);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [url, setUrl] = useState('0');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [inputShow, setInputShow] = useState(false);
 
   let firstLimit = (currentPage - 1) * NOTES_ON_PAGE;
   let secondLimit = firstLimit + NOTES_ON_PAGE;
@@ -89,7 +84,7 @@ const App = () => {
   const handleFilter = (searchRequest) => {
     data.filter(item => {
       tableHeadNames.map((name) => {
-        if (item[name] == searchRequest) {
+        if (item[name] === searchRequest) {
           setData([item]);
         }
       })
@@ -106,13 +101,20 @@ const App = () => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    setData({
+    setData(data => ([{
       id: inputValue.id,
       firstName: inputValue.firstName,
       lastName: inputValue.lastName,
       email: inputValue.email,
       phone: inputValue.phone,
-    });
+      address: {
+        streetAddress: 'unknown',
+        city: 'unknown',
+        state: 'unknown',
+        zip: 'unknown'
+      },
+      description: 'et lacus magna dolor...',
+    }, ...data]));
     setInputShow(false);
     setInputValue("");
   }
@@ -122,13 +124,15 @@ const App = () => {
       <div className="page__cover">
         <h1 className="page__title">Таблица</h1>
         <SelectionBlock>
-          <ButtonSelect name={'Много'} setUrl={setUrl}/>
-          <ButtonSelect name={'Мало'} setUrl={setUrl}/>
+          <ButtonSelect name={"Много"} setUrl={setUrl}/>
+          <ButtonSelect name={"Мало"} setUrl={setUrl}/>
         </SelectionBlock>
         <SearchForm handleFilter={handleFilter} data={data}/>
-        <ButtonAdd type="button" name="Добавить" onClick={handleInputShow} />
+        <ButtonAdd className="button add__button" type="button" name="Добавить" onClick={handleInputShow} />
         <form noValidate id="inputForm" onSubmit={onSubmit}>
-          <ButtonAdd type="submit" name="Добавить в таблицу"/>
+          <ButtonAdd className="button add-in-table__button"
+                     type="submit" name="Добавить в таблицу"
+                     disabled={!isValid.id || !isValid.firstName || !isValid.lastName || !isValid.email || !isValid.phone} />
         </form>
         {data.length && url === URL_BIG ? <Paginator currentPage={currentPage} handlePageChanged={handlePageChanged} /> : null}
         <table className="table">
@@ -142,11 +146,6 @@ const App = () => {
             validationMessage={validationMessage}
             isValid={isValid}
           />}
-          {/*<tr className="table__row">*/}
-          {/*  {tableHeadNames.map((item) =>*/}
-          {/*    (<td key={item} className="table__cell"></td>)*/}
-          {/*  )}*/}
-          {/*</tr>*/}
           {data.length ? data.slice(firstLimit, secondLimit).map((item) => (
             <tr key={item.email} className="table__row" onClick={() => setSelectedUser(item)}>
               {tableHeadNames.map((name) =>
