@@ -26,9 +26,10 @@ const App = () => {
   const [url, setUrl] = useState('0');
   const [currentPage, setCurrentPage] = useState(1);
   const [inputShow, setInputShow] = useState(false);
-  const [isValid, setIsValid] = React.useState(fieldsEnumeration(false));
-  const [inputValue, setInputValue] = React.useState(fieldsEnumeration(''));
-  const [validationMessage, setValidationMessage] = React.useState(fieldsEnumeration(''));
+  const [isValid, setIsValid] = useState(fieldsEnumeration(false));
+  const [buttonDisable, setButtonDisable] = useState(true);
+  const [inputValue, setInputValue] = useState(fieldsEnumeration(''));
+  const [validationMessage, setValidationMessage] = useState(fieldsEnumeration(''));
 
   const handleInputChange = (event) => {
     const {name, value} = event.target;
@@ -99,6 +100,19 @@ const App = () => {
     setInputShow(true);
   }
 
+  const handleButtonDisable = () => {
+    if (isValid.id && isValid.firstName && isValid.lastName && isValid.email && isValid.phone) {
+      setButtonDisable(false);
+    }
+  }
+
+  useEffect(() => {
+    handleButtonDisable()
+  }, [isValid])
+
+  console.log(isValid);
+  console.log(buttonDisable);
+
   const onSubmit = (event) => {
     event.preventDefault();
     setData(data => ([{
@@ -117,6 +131,7 @@ const App = () => {
     }, ...data]));
     setInputShow(false);
     setInputValue("");
+    setButtonDisable(true);
   }
 
   return (
@@ -130,9 +145,8 @@ const App = () => {
         <SearchForm handleFilter={handleFilter} data={data}/>
         <ButtonAdd className="button add__button" type="button" name="Добавить" onClick={handleInputShow} />
         <form noValidate id="inputForm" onSubmit={onSubmit}>
-          <ButtonAdd className="button add-in-table__button"
-                     type="submit" name="Добавить в таблицу"
-                     disabled={!isValid.id || !isValid.firstName || !isValid.lastName || !isValid.email || !isValid.phone} />
+          <ButtonAdd className="button add-in-table__button" type="submit" name="Добавить в таблицу"
+                     disabled={buttonDisable} />
         </form>
         {data.length && url === URL_BIG ? <Paginator currentPage={currentPage} handlePageChanged={handlePageChanged} /> : null}
         <table className="table">
