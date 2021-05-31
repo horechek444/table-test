@@ -85,7 +85,7 @@ const App = () => {
   const handleFilter = (searchRequest) => {
     data.filter(item => {
       tableHeadNames.map((name) => {
-        if (item[name] === searchRequest) {
+        if (item[name] == searchRequest) {
           setData([item]);
         }
       })
@@ -109,9 +109,6 @@ const App = () => {
   useEffect(() => {
     handleButtonDisable()
   }, [isValid])
-
-  console.log(isValid);
-  console.log(buttonDisable);
 
   const onSubmit = (event) => {
     event.preventDefault();
