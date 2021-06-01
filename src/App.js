@@ -64,23 +64,25 @@ const App = () => {
     getData();
   }, [url]);
 
+  const compareNumeric = (a, b) => {
+    if (a > b) return 1;
+    if (a == b) return 0;
+    if (a < b) return -1;
+  };
+
   const handleSort = (field) => {
     setSortedField(field);
-    // let sortedData = [...data];
-    // sortedData.forEach((item) => {
-    //   if (sortedField !== null) {
-    //     item[field].sort((a, b) => {
-    //       if (a[field] < b[field]) {
-    //         return -1;
-    //       }
-    //       if (a[field] > b[field]) {
-    //         return 1;
-    //       }
-    //       return 0;
-    //     });
-    //   }
-    // })
-  }
+    let arrayForSorting = [];
+    data.forEach((item) => {
+      arrayForSorting.push(item[sortedField]);
+    });
+    arrayForSorting.sort(compareNumeric);
+    arrayForSorting.map((arr) => {
+      setData((data) => ([{
+        [field]: arr[field],
+      }, ...data]));
+    });
+  };
 
   const handleFilter = (searchRequest) => {
     data.filter(item => {
@@ -90,29 +92,29 @@ const App = () => {
         }
       })
     })
-  }
+  };
 
   const handlePageChanged = (pageNumber) => {
     setCurrentPage(pageNumber);
-  }
+  };
 
   const handleInputShow = () => {
     setInputShow(true);
-  }
+  };
 
   const handleButtonDisable = () => {
     if (isValid.id && isValid.firstName && isValid.lastName && isValid.email && isValid.phone) {
       setButtonDisable(false);
     }
-  }
+  };
 
   useEffect(() => {
     handleButtonDisable()
-  }, [isValid])
+  }, [isValid]);
 
   const onSubmit = (event) => {
     event.preventDefault();
-    setData(data => ([{
+    setData((data) => ([{
       id: inputValue.id,
       firstName: inputValue.firstName,
       lastName: inputValue.lastName,
@@ -129,7 +131,7 @@ const App = () => {
     setInputShow(false);
     setInputValue("");
     setButtonDisable(true);
-  }
+  };
 
   return (
     <div className="page">
