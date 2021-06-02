@@ -9,6 +9,7 @@ import SelectionBlock from "./components/selectionBlock/SelectionBlock";
 import SearchForm from "./components/searchForm/SearchForm";
 import SelectedUser from "./components/selectedUser/SelectedUser";
 import Paginator from "./components/paginator/Paginator";
+import Loading from "./components/loading/Loading";
 
 const App = () => {
   const fieldsEnumeration = (value) => {
@@ -30,6 +31,7 @@ const App = () => {
   const [buttonDisable, setButtonDisable] = useState(true);
   const [inputValue, setInputValue] = useState(fieldsEnumeration(''));
   const [validationMessage, setValidationMessage] = useState(fieldsEnumeration(''));
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (event) => {
     const {name, value} = event.target;
@@ -54,10 +56,16 @@ const App = () => {
 
   const getData = useCallback(() => {
     let link = `http://www.filltext.com/?rows=${url}`;
-
+    setIsLoading(true);
     fetch(link)
       .then((res) => res.json())
       .then((data) => setData(data))
+      .catch((err) => {
+        console.log(err)
+      })
+      .finally(() => {
+        setIsLoading(false);
+      })
   }, [url]);
 
   useEffect(() => {
@@ -72,16 +80,16 @@ const App = () => {
 
   const handleSort = (field) => {
     setSortedField(field);
-    let arrayForSorting = [];
-    data.forEach((item) => {
-      arrayForSorting.push(item[sortedField]);
-    });
-    arrayForSorting.sort(compareNumeric);
-    arrayForSorting.map((arr) => {
-      setData((data) => ([{
-        [field]: arr[field],
-      }, ...data]));
-    });
+    // let arrayForSorting = [];
+    // data.forEach((item) => {
+    //   arrayForSorting.push(item[sortedField]);
+    // });
+    // arrayForSorting.sort(compareNumeric);
+    // arrayForSorting.map((arr) => {
+    //   // setData((data) => ([{
+    //   //   [field]: arr[field],
+    //   // }, ...data]));
+    // });
   };
 
   const handleFilter = (searchRequest) => {
@@ -148,7 +156,7 @@ const App = () => {
                      disabled={buttonDisable} />
         </form>
         {data.length && url === URL_BIG ? <Paginator currentPage={currentPage} handlePageChanged={handlePageChanged} /> : null}
-        <table className="table">
+        {isLoading ? <Loading loading={isLoading} /> : <table className="table">
           <thead className="table__title">
             <TableHead sortedField={sortedField} handleSort={handleSort}/>
           </thead>
@@ -170,7 +178,7 @@ const App = () => {
           )) : null
           }
           </tbody>
-        </table>
+        </table>}
         <SelectedUser selectedUser={selectedUser}/>
       </div>
     </div>
