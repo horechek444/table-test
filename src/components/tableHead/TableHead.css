@@ -10,13 +10,3 @@
   justify-content: space-around;
   align-items: center;
 }
-
-.head__arrow {
-  width: 12px;
-  height: auto;
-  transform: rotate(180deg);
-}
-
-.head__arrow_open {
-  transform: rotate(0deg);
-}

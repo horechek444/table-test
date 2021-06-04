@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import "./App.css";
 import {NOTES_ON_PAGE, tableHeadNames, URL_BIG} from "./utils/data";
 import TableHead from "./components/tableHead/TableHead";
@@ -10,46 +10,19 @@ import SearchForm from "./components/searchForm/SearchForm";
 import SelectedUser from "./components/selectedUser/SelectedUser";
 import Paginator from "./components/paginator/Paginator";
 import Loading from "./components/loading/Loading";
+import useSortableData from "./hooks/useSortableData";
+import useValidation from "./hooks/useValidation";
 
 const App = () => {
-  const fieldsEnumeration = (value) => {
-    return (
-      tableHeadNames.reduce((acc, field) => {
-        acc[field] = value;
-        return acc
-      }, {})
-    )
-  };
-
   const [data, setData] = useState([]);
-  const [sortedField, setSortedField] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
   const [url, setUrl] = useState('0');
   const [currentPage, setCurrentPage] = useState(1);
   const [inputShow, setInputShow] = useState(false);
-  const [isValid, setIsValid] = useState(fieldsEnumeration(false));
   const [buttonDisable, setButtonDisable] = useState(true);
-  const [inputValue, setInputValue] = useState(fieldsEnumeration(''));
-  const [validationMessage, setValidationMessage] = useState(fieldsEnumeration(''));
   const [isLoading, setIsLoading] = useState(false);
-
-  const handleInputChange = (event) => {
-    const {name, value} = event.target;
-    setInputValue({
-      ...inputValue,
-      [name]: value
-    });
-
-    setIsValid({
-      ...isValid,
-      [name]: event.target.validity.valid
-    });
-
-    setValidationMessage({
-      ...validationMessage,
-      [name]: event.target.validationMessage
-    });
-  };
+  const {sortedProducts, requestSort, sortConfig} = useSortableData(data);
+  const {isValid, inputValue, setInputValue, validationMessage, handleInputChange} = useValidation();
 
   let firstLimit = (currentPage - 1) * NOTES_ON_PAGE;
   let secondLimit = firstLimit + NOTES_ON_PAGE;
@@ -71,26 +44,6 @@ const App = () => {
   useEffect(() => {
     getData();
   }, [url]);
-
-  const compareNumeric = (a, b) => {
-    if (a > b) return 1;
-    if (a == b) return 0;
-    if (a < b) return -1;
-  };
-
-  const handleSort = (field) => {
-    setSortedField(field);
-    // let arrayForSorting = [];
-    // data.forEach((item) => {
-    //   arrayForSorting.push(item[sortedField]);
-    // });
-    // arrayForSorting.sort(compareNumeric);
-    // arrayForSorting.map((arr) => {
-    //   // setData((data) => ([{
-    //   //   [field]: arr[field],
-    //   // }, ...data]));
-    // });
-  };
 
   const handleFilter = (searchRequest) => {
     data.filter(item => {
@@ -155,10 +108,11 @@ const App = () => {
           <ButtonAdd className="button add-in-table__button" type="submit" name="Добавить в таблицу"
                      disabled={buttonDisable} />
         </form>
-        {data.length && url === URL_BIG ? <Paginator currentPage={currentPage} handlePageChanged={handlePageChanged} /> : null}
+        {data.length && url === URL_BIG ?
+          <Paginator currentPage={currentPage} handlePageChanged={handlePageChanged} /> : null}
         {isLoading ? <Loading loading={isLoading} /> : <table className="table">
           <thead className="table__title">
-            <TableHead sortedField={sortedField} handleSort={handleSort}/>
+            <TableHead sortConfig={sortConfig} requestSort={requestSort} />
           </thead>
           <tbody className="table__body">
           {inputShow && <TableInput
@@ -167,7 +121,7 @@ const App = () => {
             validationMessage={validationMessage}
             isValid={isValid}
           />}
-          {data.length ? data.slice(firstLimit, secondLimit).map((item) => (
+          {(sortedProducts ? sortedProducts : data).slice(firstLimit, secondLimit).map((item) => (
             <tr key={item.email} className="table__row" onClick={() => setSelectedUser(item)}>
               {tableHeadNames.map((name) =>
                 (<td key={name} className="table__cell">
@@ -175,7 +129,7 @@ const App = () => {
                 </td>)
               )}
             </tr>
-          )) : null
+          ))
           }
           </tbody>
         </table>}
