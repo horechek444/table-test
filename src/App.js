@@ -1,6 +1,6 @@
-import React, {useCallback, useEffect, useMemo, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import "./App.css";
-import {NOTES_ON_PAGE, tableHeadNames, URL_BIG} from "./utils/data";
+import {tableHeadNames, URL_BIG, NOTES_ON_PAGE} from "./utils/data";
 import TableHead from "./components/tableHead/TableHead";
 import ButtonAdd from "./components/buttonAdd/ButtonAdd";
 import TableInput from "./components/tableInput/TableInput";
