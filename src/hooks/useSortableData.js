@@ -1,10 +1,17 @@
-import React, {useMemo, useState} from "react";
+import {useMemo, useState} from "react";
+import {NOTES_ON_PAGE} from "../utils/data";
 
-const useSortableData = (data, config = { key: 0, direction: 0 }) => {
+const useSortableData = (data, config = {key: 0, direction: 0}) => {
   const [sortConfig, setSortConfig] = useState(config);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  let firstLimit = (currentPage - 1) * NOTES_ON_PAGE;
+  let secondLimit = firstLimit + NOTES_ON_PAGE;
+
+  let sortableProducts = [...data].slice(firstLimit, secondLimit);
+  console.log(sortableProducts);
 
   const sortedProducts = useMemo(() => {
-    let sortableProducts = [...data];
     if (sortConfig !== { key: 0, direction: 0 }) {
       sortableProducts.sort((a, b) => {
         if (a[sortConfig.key] < b[sortConfig.key]) {
@@ -17,7 +24,7 @@ const useSortableData = (data, config = { key: 0, direction: 0 }) => {
       });
     }
     return sortableProducts;
-  }, [data, sortConfig]);
+  }, [sortConfig, sortableProducts]);
 
   const requestSort = (key) => {
     let direction = "ascending";
@@ -27,7 +34,7 @@ const useSortableData = (data, config = { key: 0, direction: 0 }) => {
     setSortConfig({ key, direction });
   }
 
-  return {sortedProducts, requestSort, sortConfig};
+  return {sortedProducts, requestSort, sortConfig, currentPage, setCurrentPage};
 };
 
 export default useSortableData;
