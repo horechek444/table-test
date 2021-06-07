@@ -32,7 +32,7 @@ const TableInput = ({handleInputChange, inputValue, validationMessage, isValid})
         (<td key={item} className="table__cell">
           <label>
             <input
-              className={`input input__${item}`}
+              className={isValid ? `input input__${item}` : "input input__invalid"}
               name={item}
               type={handleType(item)}
               pattern={handlePattern(item)}
@@ -40,7 +40,7 @@ const TableInput = ({handleInputChange, inputValue, validationMessage, isValid})
               value={inputValue[item]}
               form="inputForm"
               required/>
-            {!isValid && <span>{validationMessage}</span>}
+            {!isValid && <span className="input__validation-message">{validationMessage}</span>}
           </label>
         </td>)
       )}

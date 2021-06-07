@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from "react";
 import "./App.css";
-import {tableHeadNames, URL_BIG, NOTES_ON_PAGE} from "./utils/data";
+import {tableHeadNames, URL_BIG} from "./utils/data";
 import TableHead from "./components/tableHead/TableHead";
 import ButtonAdd from "./components/buttonAdd/ButtonAdd";
 import TableInput from "./components/tableInput/TableInput";
@@ -12,20 +12,17 @@ import Paginator from "./components/paginator/Paginator";
 import Loading from "./components/loading/Loading";
 import useSortableData from "./hooks/useSortableData";
 import useValidation from "./hooks/useValidation";
+import TableBody from "./components/tableBody/TableBody";
 
 const App = () => {
   const [data, setData] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [url, setUrl] = useState('0');
-  // const [currentPage, setCurrentPage] = useState(1);
   const [inputShow, setInputShow] = useState(false);
   const [buttonDisable, setButtonDisable] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const {sortedProducts, requestSort, sortConfig, currentPage, setCurrentPage} = useSortableData(data);
   const {isValid, inputValue, setInputValue, validationMessage, handleInputChange} = useValidation();
-
-  let firstLimit = (currentPage - 1) * NOTES_ON_PAGE;
-  let secondLimit = firstLimit + NOTES_ON_PAGE;
 
   const getData = useCallback(() => {
     let link = `http://www.filltext.com/?rows=${url}`;
@@ -73,7 +70,7 @@ const App = () => {
     handleButtonDisable()
   }, [isValid]);
 
-  const onSubmit = (event) => {
+  const handleAddSubmit = (event) => {
     event.preventDefault();
     setData((data) => ([{
       id: inputValue.id,
@@ -103,37 +100,30 @@ const App = () => {
           <ButtonSelect name={"Мало"} setUrl={setUrl}/>
         </SelectionBlock>
         <SearchForm handleFilter={handleFilter} data={data}/>
-        <ButtonAdd className="button add__button" type="button" name="Добавить" onClick={handleInputShow}/>
-        <form noValidate id="inputForm" onSubmit={onSubmit}>
-          <ButtonAdd className="button add-in-table__button" type="submit" name="Добавить в таблицу"
-                     disabled={buttonDisable}/>
-        </form>
-        {data.length && url === URL_BIG ?
-          <Paginator currentPage={currentPage} handlePageChanged={handlePageChanged}/> : null}
-        {isLoading ? <Loading loading={isLoading}/> : <table className="table">
-          <thead className="table__title">
-          <TableHead sortConfig={sortConfig} requestSort={requestSort}/>
-          </thead>
-          <tbody className="table__body">
-          {inputShow && <TableInput
-            handleInputChange={handleInputChange}
-            inputValue={inputValue}
-            validationMessage={validationMessage}
-            isValid={isValid}
-          />}
-          {sortedProducts.map((item) => (
-            <tr key={item.email} className="table__row" onClick={() => setSelectedUser(item)}>
-              {tableHeadNames.map((name) =>
-                (<td key={name} className="table__cell">
-                  {item[name]}
-                </td>)
-              )}
-            </tr>
-          ))
-          }
-          </tbody>
-        </table>}
-        <SelectedUser selectedUser={selectedUser}/>
+        <div className="page__table-wrapper">
+          <ButtonAdd className="button add__button" type="button" name="Добавить" onClick={handleInputShow}/>
+          <form noValidate id="inputForm" onSubmit={handleAddSubmit}>
+            <ButtonAdd className="button add-in-table__button" type="submit" name="Добавить в таблицу"
+                       disabled={buttonDisable}/>
+          </form>
+          {data.length && url === URL_BIG ?
+            <Paginator currentPage={currentPage} handlePageChanged={handlePageChanged}/> : null}
+          {isLoading ? <Loading loading={isLoading}/> : <table className="table">
+            <thead className="table__title">
+            <TableHead sortConfig={sortConfig} requestSort={requestSort}/>
+            </thead>
+            <tbody className="table__body">
+            {inputShow && <TableInput
+              handleInputChange={handleInputChange}
+              inputValue={inputValue}
+              validationMessage={validationMessage}
+              isValid={isValid}
+            />}
+            <TableBody setSelectedUser={setSelectedUser} sortedProducts={sortedProducts}/>
+            </tbody>
+          </table>}
+          <SelectedUser selectedUser={selectedUser}/>
+        </div>
       </div>
     </div>
   );

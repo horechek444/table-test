@@ -45,9 +45,17 @@ button:disabled {
 
 .table {
   border-collapse: collapse;
+  align-self: center;
 }
 
 .table__row,
 .table__cell {
   border: 1px solid black;
+}
+
+.page__table-wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 800px;
+  align-items: flex-end;
 }

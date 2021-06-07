@@ -9,7 +9,6 @@ const useSortableData = (data, config = {key: 0, direction: 0}) => {
   let secondLimit = firstLimit + NOTES_ON_PAGE;
 
   let sortableProducts = [...data].slice(firstLimit, secondLimit);
-  console.log(sortableProducts);
 
   const sortedProducts = useMemo(() => {
     if (sortConfig !== { key: 0, direction: 0 }) {

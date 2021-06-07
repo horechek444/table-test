@@ -1,0 +1,11 @@
+.input__invalid {
+    border: 1px solid red;
+}
+
+.input__validation-message {
+    z-index: 10;
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: red;
+}
